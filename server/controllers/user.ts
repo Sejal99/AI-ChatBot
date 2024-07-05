@@ -2,13 +2,17 @@ import jwt, { Secret } from 'jsonwebtoken';
 import User from "../models/user";
 import bcrypt from 'bcrypt';
 
-const secret: Secret = process.env.JWT_SECRET || '';
+import dotenv from 'dotenv'
+dotenv.config();
+
 //@ts-ignore
 export const signup = async (req, res) => {
   try {
     const { email, password } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = await User.create({ email, password: hashedPassword });
+    console.log(newUser);
+    
     res.status(201).json(newUser);
   } catch (error) {
     //@ts-ignore
@@ -19,22 +23,26 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+
+    // Find the user by email
     const user = await User.findOne({ email });
     if (!user) {
-      return res.status(401).json({ message: "User not found" });
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
-    const validPassword = await bcrypt.compare(password, user.password);
-    if (!validPassword) {
-      return res.status(401).json({ message: "Invalid email or password" });
+
+    // Compare the provided password with the stored hashed password
+    const isPasswordValid = await bcrypt.compare(password, user.password);
+    if (!isPasswordValid) {
+      return res.status(400).json({ message: 'Invalid email or password' });
     }
-    const token = jwt.sign({ userId: user._id }, secret, {
-      expiresIn: "1h",
-    });
-    //setting cookie in response
-    res.cookie("jwt", token, { httpOnly: true, maxAge: 3600000 });
-    res.json({ token });
+    if (!process.env.SECRET) {
+      throw new Error('JWT secret is not defined');
+    }
+    // Generate a JWT
+    const token = jwt.sign({ id: user._id },process.env.SECRET, { expiresIn: '1h' });
+
+    res.status(200).json({ token });
   } catch (error) {
-    //@ts-ignore
-    res.status(400).json({ message: error.message });
+    res.status(500).json({ });
   }
 };
