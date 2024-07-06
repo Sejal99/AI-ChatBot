@@ -2,6 +2,7 @@
 import React, { useState } from "react";
 import { BsFillSendFill } from "react-icons/bs";
 
+
 const Chat = () => {
   const OPENROUTER_API_KEY =process.env.NEXT_PUBLIC_NOT_OPENROUTER_API ;
   const [message, setMessage] = useState([]);
