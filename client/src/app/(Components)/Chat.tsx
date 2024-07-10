@@ -4,7 +4,7 @@ import { BsFillSendFill } from "react-icons/bs";
 
 
 const Chat = () => {
-  const OPENROUTER_API_KEY =process.env.NEXT_PUBLIC_NOT_OPENROUTER_API ;
+  const OPENROUTER_API_KEY ="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" ;
   const [message, setMessage] = useState([]);
   const [responseMessage, setResponseMessage] = useState([]);
   const [conversation, setConversation] = useState([]);
