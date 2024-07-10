@@ -7,7 +7,11 @@ import { FaUserPen } from "react-icons/fa6";
 import { FaCaretDown } from "react-icons/fa";
 const Navbar = () => {
   const [selectedLink, setSelectedLink] = useState<number | null>(null);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
 
+  const toggleDropdown = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
   const handleClick = (index:number) => {
     setSelectedLink(index);
   };
@@ -112,7 +116,7 @@ const Navbar = () => {
           </a>
         </div>
         <div>
-          <a href="#" className="text-white hover:text-gray-300">
+          <a href="#" className="text-white hover:text-gray-300" onClick={toggleDropdown}>
             <GiCharacter
               style={{ display: "inline-block", marginRight: "5px" }}
             />
@@ -121,6 +125,18 @@ const Navbar = () => {
               style={{ display: "inline-block", marginLeft: "5px" }}
             />
           </a>
+          {dropdownOpen && (
+        <div className="absolute mt-2 w-48 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5">
+          <div className="py-1" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
+            <a href="/signup" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+              Signup
+            </a>
+            <a href="/signin" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">
+              Signin
+            </a>
+          </div>
+        </div>
+      )}
         </div>
       </div>
     </nav>
