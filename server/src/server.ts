@@ -10,7 +10,7 @@ const app = express();
 // Middleware 
 app.use(morgan("dev"))
 app.use(cors({
-    origin: ["http://localhost:3000"],
+    origin: ["https://ai-chat-bot-6dj9.vercel.app"],
     credentials: true
 }));
 app.use(express.json())
