@@ -1,6 +1,7 @@
 'use client'
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { BASE_URL } from "@/services";
 
 const LoginPage = () => {
   const [id, setId] = useState("");
@@ -8,11 +9,11 @@ const LoginPage = () => {
   const [code, setCode] = useState("");
   const [codeRequested, setCodeRequested] = useState(false);
   const router = useRouter();
-
+//@ts-ignore
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch(`http://localhost:3006/api/login?id=${id}&password=${password}&code=${code}`);
+      const response = await fetch(`${BASE_URL}/api/login?id=${id}&password=${password}&code=${code}`);
       const data = await response.json();
       if (data.success) {
         router.push("/");
